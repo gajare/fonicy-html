@@ -2,7 +2,7 @@ package main
 
 import (
 	"backend/config"
-	"fmt"
+	"backend/handlers"
 	"log"
 	"net/http"
 
@@ -11,9 +11,7 @@ import (
 
 func main() {
 	r := mux.NewRouter()
-	r.HandleFunc("/home", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintln(w, "Hello World")
-	})
+	r.HandleFunc("/home", handlers.HelloWorld)
 	port := config.GetPort()
 
 	log.Fatal(http.ListenAndServe(":"+port, r))
