@@ -12,6 +12,7 @@ import (
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/home", handlers.HelloWorld)
+	r.HandleFunc("/auth", handlers.GetAuthToken)
 	port := config.GetPort()
 
 	log.Fatal(http.ListenAndServe(":"+port, r))
