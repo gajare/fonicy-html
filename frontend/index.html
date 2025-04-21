@@ -54,11 +54,11 @@
                 </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="#" id="logsDropdown" role="button" 
-                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Logs
                   </a>
                   <div class="dropdown-menu" aria-labelledby="logsDropdown">
-                    <a class="dropdown-item" href="logs.html?type=accident">Accident Logs</a>
+                    <a class="dropdown-item" href="http://localhost:3000?type=accident">Accident Logs</a>
                     <a class="dropdown-item" href="logs.html?type=admin">Admin Equipment Logs</a>
                     <a class="dropdown-item" href="logs.html?type=call">Call Logs</a>
                     <a class="dropdown-item" href="logs.html?type=construction">Daily Construction Report Log</a>
@@ -485,38 +485,129 @@
   <!-- footer section -->
 
     <!-- Login Modal -->
-  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="loginModalLabel">Login to Your Account</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="loginForm">
-            <div class="form-group">
-              <label for="client-id">Client Id</label>
-              <input type="email" class="form-control" id="loginEmail" aria-describedby="emailHelp" placeholder="Enter client-id" required>
-            </div>
-            <div class="form-group">
-              <label for="client-secret">Client Secret</label>
-              <input type="password" class="form-control" id="client-secret" placeholder="Password" required>
-            </div>
-            <div class="form-group form-check">
-              <input type="checkbox" class="form-check-input" id="rememberMe">
-              <label class="form-check-label" for="rememberMe">Remember me</label>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Login</button>
-          </form>
-          <div class="text-center mt-3">
-            <a href="#" data-toggle="modal" data-target="#forgotPasswordModal" data-dismiss="modal">Forgot Cleint-id?</a>
+    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="loginModalLabel">Procore Login</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="loginForm">
+              <div class="form-group">
+                <label for="clientId">Client ID</label>
+                <input type="text" class="form-control" id="clientId" required>
+              </div>
+              <div class="form-group">
+                <label for="clientSecret">Client Secret</label>
+                <input type="password" class="form-control" id="clientSecret" required>
+              </div>
+              <div class="form-group">
+                <label for="authCode">Authorization Code</label>
+                <div class="input-group">
+                  <input type="text" class="form-control" id="authCode" required>
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" id="getAuthCode">
+                      Get Code
+                    </button>
+                  </div>
+                </div>
+                <small class="form-text text-muted">Click "Get Code" to generate new authorization code</small>
+              </div>
+              <div id="loginMessage" class="alert d-none"></div>
+              <button type="submit" class="btn btn-primary btn-block">Login</button>
+            </form>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  
+    <!-- Rest of the HTML remains the same -->
+  
+    <script>
+      // Get Authorization Code
+      document.getElementById('getAuthCode').addEventListener('click', function() {
+        const clientId = document.getElementById('clientId').value;
+        if (!clientId) {
+          showMessage('Please enter Client ID first', 'danger');
+          return;
+        }
+        
+        const authUrl = `https://login-sandbox.procore.com/oauth/authorize?response_type=code&client_id=${encodeURIComponent(clientId)}&redirect_uri=urn:ietf:wg:oauth:2.0:oob`;
+        window.open(authUrl, '_blank');
+      });
+  
+      // Handle Login Form Submission
+      document.getElementById('loginForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const clientId = document.getElementById('clientId').value;
+        const clientSecret = document.getElementById('clientSecret').value;
+        const authCode = document.getElementById('authCode').value;
+  
+        if (!clientId || !clientSecret || !authCode) {
+          showMessage('All fields are required', 'danger');
+          return;
+        }
+  
+        try {
+          const response = await fetch('https://login-sandbox.procore.com/oauth/token/', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+              grant_type: 'authorization_code',
+              code: authCode,
+              client_id: clientId,
+              client_secret: clientSecret,
+              redirect_uri: 'urn:ietf:wg:oauth:2.0:oob'
+            })
+          });
+  
+          const data = await response.json();
+          
+          if (!response.ok) {
+            throw new Error(data.error_description || 'Authentication failed');
+          }
+  
+          // Store tokens
+          sessionStorage.setItem('procore_access_token', data.access_token);
+          sessionStorage.setItem('procore_refresh_token', data.refresh_token);
+  
+          // Update all log links
+          updateLogLinks(data.access_token);
+          
+          showMessage('Login successful! Redirecting...', 'success');
+          setTimeout(() => {
+            $('#loginModal').modal('hide');
+            window.location.reload();
+          }, 1500);
+  
+        } catch (error) {
+          showMessage(error.message, 'danger');
+        }
+      });
+  
+      function updateLogLinks(accessToken) {
+        document.querySelectorAll('.dropdown-item').forEach(link => {
+          const url = new URL(link.href);
+          url.searchParams.set('access_token', accessToken);
+          link.href = url.toString();
+        });
+      }
+  
+      function showMessage(message, type) {
+        const messageEl = document.getElementById('loginMessage');
+        messageEl.className = `alert alert-${type} ${type === 'success' ? 'alert-success' : 'alert-danger'} d-block`;
+        messageEl.textContent = message;
+      }
+  
+      // Initialize year
+      document.getElementById("displayYear").innerHTML = new Date().getFullYear();
+    </script>
 
   <!-- Register Modal -->
   <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
@@ -599,7 +690,7 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCh39n5U-4IoWpsVGUHWdqB6puEkhRLdmI&callback=myMap"></script>
   <!-- End Google Map -->
 
-  <script>
+  <!-- <script>
     // Handle login form submission
     $('#loginForm').on('submit', function(e) {
       e.preventDefault();
@@ -626,7 +717,7 @@
     
     // Set current year in footer
     document.getElementById("displayYear").innerHTML = new Date().getFullYear();
-  </script>
+  </script> -->
 
 </body>
 
