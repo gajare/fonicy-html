@@ -1,0 +1,95 @@
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+h1, h2 {
+    color: #2c3e50;
+}
+
+.search-form {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="date"],
+input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: #2980b9;
+}
+
+.results {
+    margin-top: 20px;
+}
+
+.log-entry {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.log-entry h3 {
+    margin-top: 0;
+    color: #3498db;
+}
+
+.log-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.log-detail {
+    flex: 1;
+    min-width: 200px;
+}
+
+.no-results {
+    text-align: center;
+    color: #7f8c8d;
+    font-style: italic;
+}
