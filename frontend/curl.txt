@@ -1,29 +1,10 @@
-curl --location 'https://sandbox.procore.com/rest/v1.0/projects/117923/equipment_logs' \
---header 'Procore-Company-Id: 117923' \
---header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJFUzUxMiJ9.eyJhbXIiOltdLCJhaWQiOiJfREt2R2x3WUtzcWU5UXhCaFowMGVaOVJtbU9LZDhkenlvdlVLeFZMNTEwIiwiYW91aWQiOm51bGwsImFvdXVpZCI6bnVsbCwiZXhwIjoxNzQ1MjQ3MjYxLCJzaWF0IjpudWxsLCJ1aWQiOjE0ODM1MCwidXVpZCI6ImJlYzNhZGU0LTVkZjctNDljOC04YmVkLWM5MmM0OWQ4MDk0ZSIsImxhc3RfbWZhX2NoZWNrIjoxNzQ1MjQxODYxfQ.AI6raTOVg6TBtsMLHO3LBl2siU2ZK7TKyDKy__P10yBwLyjrHtVBjAMdEAgysADRt75KQt9gEucqtwoHlX34ih75ATbivuTTDoDB-J1PdtVjvCaAiRU2peJKyZ6FjLJidq-WEDlc91mdFlORZnbPs2iQXyEFMStDJ1s4_FVAmzOxtjbD' \
---data-raw '{
-  "equipment_log": {
-    "date": "2024-10-20",
-    "notes": "Equipment Inspected",
-    "hours_idle": 2,
-    "hours_operating": 8,
-    "inspected": true,
-    "inspection_hour": 9,
-    "inspection_minute": 50,
-    "mt_location": ["1space", "1 space"],
-    "cost_code_id": 65400439,
-    "equipment_id": 15504,
-    "equipment_name": "Hammer"
-  }
-}'
-
+post:
 
 
 curl --location 'https://sandbox.procore.com/rest/v1.0/projects/117923/equipment_logs' \
 --header 'Procore-Company-Id: 117923' \
 --header 'Content-Type: application/json' \
---header 'Authorization: Bearer eyJhbGciOiJFUzUxMiJ9.eyJhbXIiOltdLCJhaWQiOiJfREt2R2x3WUtzcWU5UXhCaFowMGVaOVJtbU9LZDhkenlvdlVLeFZMNTEwIiwiYW91aWQiOm51bGwsImFvdXVpZCI6bnVsbCwiZXhwIjoxNzQ1MjQ3NzY3LCJzaWF0IjpudWxsLCJ1aWQiOjE0ODM1MCwidXVpZCI6ImJlYzNhZGU0LTVkZjctNDljOC04YmVkLWM5MmM0OWQ4MDk0ZSIsImxhc3RfbWZhX2NoZWNrIjoxNzQ1MjQyMzY3fQ.AHQJwNIWkVRtOMjnfYqlaVVrN6h8ZMRoyhcJy9btNc4HppjhAJsPXrqWVpk4U06u9q4UGrQJx2mTYBG2CF5---ycAAcfdaAPOmcNibFPLHOVFhH9ccC_ZgIh0M4Ua_4tdI5HJ_797cIwxDDROMPidLDrU8Lohv-WvMAl9D8SqhpbXCBh' \
+--header 'Authorization: Bearer eyJhbGciOiJFUzUxMiJ9.eyJhbXIiOltdLCJhaWQiOiJfREt2R2x3WUtzcWU5UXhCaFowMGVaOVJtbU9LZDhkenlvdlVLeFZMNTEwIiwiYW91aWQiOm51bGwsImFvdXVpZCI6bnVsbCwiZXhwIjoxNzQ1MjU2MzA2LCJzaWF0IjpudWxsLCJ1aWQiOjE0ODM1MCwidXVpZCI6ImJlYzNhZGU0LTVkZjctNDljOC04YmVkLWM5MmM0OWQ4MDk0ZSIsImxhc3RfbWZhX2NoZWNrIjoxNzQ1MjUwOTA2fQ.AMu6Qh0mG_A3bJ68vOtzFq1BqLzNndroAVc26ybZJfe5icn3GRhQHf0jUFkDMKOmBnJoaKRVWQoH0jzU-Exd1dycAZdUCTfdYHENA7-zEMG_xwGUx0wDEIZYQV7y78KWrfeKX76cRNx9PsLEUxQINpHLTIRaHDJSFyhDILFgq2eTOrdF' \
 --data-raw '{
   "equipment_log": {
     "date": "2024-10-20",
@@ -38,3 +19,32 @@ curl --location 'https://sandbox.procore.com/rest/v1.0/projects/117923/equipment
     "equipment_name": "Hammer"
   }
 }'
+
+
+
+
+
+
+
+
+
+
+get:
+
+curl --location 'https://sandbox.procore.com/rest/v1.0/projects/117923/equipment_logs?log_date=2024-04-21&per_page=100&page=1' \
+--header 'Procore-Company-Id: 4264807' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer eyJhbGciOiJFUzUxMiJ9.eyJhbXIiOltdLCJhaWQiOiJfREt2R2x3WUtzcWU5UXhCaFowMGVaOVJtbU9LZDhkenlvdlVLeFZMNTEwIiwiYW91aWQiOm51bGwsImFvdXVpZCI6bnVsbCwiZXhwIjoxNzQ1MjU5MzI3LCJzaWF0IjpudWxsLCJ1aWQiOjE0ODM1MCwidXVpZCI6ImJlYzNhZGU0LTVkZjctNDljOC04YmVkLWM5MmM0OWQ4MDk0ZSIsImxhc3RfbWZhX2NoZWNrIjoxNzQ1MjUzOTI3fQ.ACZGiSmNijmN-I761lhlUftgMGaXpChkDnhEUCLX83ZJKVBByiULn3Umu38A3JDhfewYzPt0y4ONSWDhCfwmjWsTAXF22E70hVcIkPzmF3hIQ0hLmutPFzgOPEEVABhy0u6oHe4LIJI5eo05yumPuuL-F2jLKdGRLb0BoETdvBCIirnP'
+
+
+
+get by id:
+
+
+
+curl --location 'https://sandbox.procore.com/rest/v1.0/projects/117923/equipment_logs/100358' \
+--header 'Procore-Company-Id: 4264807' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: ••••••' \
+--header 'Cookie: __cf_bm=b48TmHJumhpnDFswObVDIrTeR.w3RV4WKUZiZg_hJ68-1745256051-1.0.1.1-RBc4xGy5lLmvne..TMtwjYJa0pEj3AhuTfaq21KyLiIOBpq3qKsBAuBQNjZudBodR.z1Tl_xi4nW7JAnTwD_WNlWurpN.6IG27vTx0V2OrY'
+
