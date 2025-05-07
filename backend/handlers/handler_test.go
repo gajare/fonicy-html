@@ -34,6 +34,6 @@ func TestHelloWorld(t *testing.T) {
 	}
 }
 
-func TestGetAuthToken(t *testing.T) {
-	req, err := httptest.NewRequest("POST", "/auth/token", nil)
-}
+// func TestGetAuthToken(t *testing.T) {
+// 	req, err := httptest.NewRequest("POST", "/auth/token", nil)
+// }
